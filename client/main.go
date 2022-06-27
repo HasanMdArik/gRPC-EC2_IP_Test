@@ -1,9 +1,14 @@
 package main
 
 import (
+	"context"
+	"ec2-grpc-ip-test/client/IPTestService"
 	"encoding/json"
 	"log"
 	"os"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
@@ -13,6 +18,20 @@ func main() {
 	log.Println("Private IP:", privateIP)
 	log.Println("Public IP:", publicIP)
 
+	// Call the server
+	conn, err := grpc.Dial(handlerAddress+":2500", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	panicOnErr(err)
+	defer func() {
+		conn.Close()
+	}()
+	client := IPTestService.NewIP_TestClient(conn)
+
+	res, err := client.GetIP(context.Background(), &IPTestService.Req{
+		Msg: "Just for testing purposes",
+	})
+
+	log.Println("Response IP:", res.Ip)
+	log.Println("Response Address:", res.Address)
 }
 
 func getNetInfo() (privateIP, publicIP, handlerServerAddr string) {
