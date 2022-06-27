@@ -15,12 +15,13 @@ type IPTestServiceHandler struct {
 
 func (server IPTestServiceHandler) GetIP(ctx context.Context, req *IPTestService.Req) (res *IPTestService.Res, err error) {
 	reqPeer, _ := peer.FromContext(ctx)
-	address := reqPeer.Addr
-	addrString := address.String()
+	addrString := reqPeer.Addr.String()
 	addrSplit := strings.Split(addrString, ":")
 
-	log.Println("Req Type:", address.Network())
-	log.Println("Req Address:", address.String())
+	log.Println("Req Type:", reqPeer.Addr.Network())
+	log.Println("Req Address:", reqPeer.Addr.String())
+
+	res = &IPTestService.Res{}
 
 	res.Address = addrString
 	res.Ip = addrSplit[0]
