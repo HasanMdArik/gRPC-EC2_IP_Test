@@ -32,6 +32,7 @@ func main() {
 
 	log.Println("Response IP:", res.Ip)
 	log.Println("Response Address:", res.Address)
+	log.Println("Requesting Port:", res.Port)
 }
 
 func getNetInfo() (privateIP, publicIP, handlerServerAddr string) {
