@@ -1,0 +1,20 @@
+syntax="proto3";
+
+package halalwedd;
+
+option go_package="/IPTestService";
+
+
+message Req {
+    string msg = 1;
+}
+
+message Res {
+    string address =1;
+    string ip = 2;
+    string port = 3;
+}
+
+service IP_Test {
+    rpc GetIP(Req) returns (Res);
+}
